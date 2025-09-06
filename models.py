@@ -1,9 +1,5 @@
-from sqlalchemy import create_engine, Column, String, Integer, ForeignKey
-from sqlalchemy.orm import sessionmaker, declarative_base
-
-engine = create_engine("sqlite:///./test.db")
-
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 

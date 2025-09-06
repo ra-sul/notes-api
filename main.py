@@ -1,6 +1,5 @@
-from models import Base, engine, SessionLocal, Note, User
-
-Base.metadata.create_all(engine)
+from database import SessionLocal
+import repositories
 
 db = SessionLocal()
 
@@ -17,7 +16,7 @@ while in_auth:
 		in_login = True
 		name = input("Введите имя:")
 		password = input("Введите пароль:")
-		current_user = db.query(User).filter(User.name == name, User.password == password).first()
+		current_user = repositories.get_user(db=db, name=name, password=password)
 		if current_user:
 			in_auth = False
 			print(f"Привет {current_user.name}!")
@@ -27,14 +26,12 @@ while in_auth:
 				print("Пользователь или пароль введены неверно!")
 	elif action == '2':
 		new_name = input("Введите имя:")
-		new_password = input("Введите пароль:")
-		new_user = User(name=new_name, password=new_password)
+		new_password = input("Введите пароль:")	
 		in_sure = True
 		while in_sure:
 			sure = input("Зарегистрироваться? (д/н)>")
 			if sure == 'д':
-				db.add(new_user)
-				db.commit()
+				repositories.create_user(db=db, name=new_name, password=new_password)
 				print("Регистрация прошла успешно!")
 				in_sure = False
 			elif sure == 'н':
@@ -55,14 +52,12 @@ while on_procces:
 		case "create":
 			new_title = input("Заголовок заметки:")
 			new_body = input("Тело заметки:")
-			new_note = Note(title=new_title, body=new_body, user_id=current_user.id)
-			db.add(new_note)
-			db.commit()
+			repositories.create_note(db=db, title=new_title, body=new_body, user_id=current_user)
 			print("Заметка добавлена!")
 		case "select":
 			in_select = True
 			id = int(input("Введите номер заметки>"))
-			note = db.query(Note).filter(Note.id == id, Note.user_id == current_user.id).first()
+			note = repositories.get_note_by_id(db=db, id=id, user_id=current_user.id)
 			if note:
 				while in_select:
 					print("\n---------",note.title, "---------")
@@ -76,9 +71,7 @@ while on_procces:
 						new_body = input("Тело заметки:")
 						sure = input("Обновить заметку? (д/н)>")
 						if sure == 'д':
-							note.title = new_title
-							note.body = new_body
-							db.commit()
+							repositories.update_note(db=db, note=note, new_title=new_title, new_body=new_body)
 							print("Заметка обновлена!")
 							in_select = False
 						elif sure == 'н':
@@ -86,8 +79,7 @@ while on_procces:
 					elif cmd == 2:
 						sure = input("Удалить заметку? (д/н)>")
 						if sure == 'д':
-							db.delete(note)
-							db.commit()
+							repositories.delete_note(db=db, note=note)
 							print("Заметка удалена!")
 							in_select = False
 						elif sure == 'н':
@@ -100,7 +92,7 @@ while on_procces:
 			else:
 				print("Заметка не доступна или не существует!")
 		case "show_all":
-			notes = db.query(Note).filter(Note.user_id == current_user.id).all()
+			notes = repositories.get_notes_by_user(db=db, user_id=current_user.id)
 
 			print("---------------------------------")
 			for note in notes:
