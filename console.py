@@ -96,7 +96,7 @@ while on_procces:
 			else:
 				print("Заметка не доступна или не существует!")
 		case "show_all":
-			notes = services.lits_user_notes(db=db, user=current_user)
+			notes = services.lits_user_notes(db=db, user_id=current_user.id)
 
 			print("---------------------------------")
 			for note in notes:

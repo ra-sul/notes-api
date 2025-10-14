@@ -34,4 +34,4 @@ def update_note(db: Session, note: Note, new_title: str, new_body: str) -> Note:
 
 def delete_note(db: Session, note: Note):
 	db.delete(note)
-	db.commit
+	db.commit()
