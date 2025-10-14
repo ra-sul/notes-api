@@ -22,5 +22,5 @@ def update_user_note(db: Session, note, new_title: str, new_body: str):
 def delete_user_note(db: Session, note):
 	return repositories.delete_note(db=db, note=note)
 
-def lits_user_notes(db: Session, user_id: int):
+def list_user_notes(db: Session, user_id: int):
 	return repositories.get_notes_by_user(db=db, user_id=user_id)
