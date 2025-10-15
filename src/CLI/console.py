@@ -1,5 +1,5 @@
-from database import SessionLocal, init_db
-import services
+from src.app.database import SessionLocal, init_db
+import src.app.services.notes as notes
 
 
 init_db()
@@ -18,7 +18,7 @@ while not current_user:
 		name = input("Введите имя:")
 		password = input("Введите пароль:")
 		try:
-			current_user = services.login_user(db=db, name=name, password=password)
+			current_user = notes.login_user(db=db, name=name, password=password)
 			print(f"Привет {current_user.name}!")
 			print("Введите \"?\", чтобы получить подсказку")
 			on_procces = True
@@ -32,7 +32,7 @@ while not current_user:
 			sure = input("Зарегистрироваться? (д/н)>")
 			if sure == 'д':
 				try:
-					services.register_user(db=db, name=new_name, password=new_password)
+					notes.register_user(db=db, name=new_name, password=new_password)
 				except ValueError as e:
 					print(e)
 				print("Регистрация прошла успешно!")
@@ -56,12 +56,12 @@ while on_procces:
 		case "create":
 			new_title = input("Заголовок заметки:")
 			new_body = input("Тело заметки:")
-			services.add_note_for_user(db=db, title=new_title, body=new_body, user_id=current_user.id)
+			notes.add_note_for_user(db=db, title=new_title, body=new_body, user_id=current_user.id)
 			print("Заметка добавлена!")
 		case "select":
 			in_select = True
 			id = int(input("Введите номер заметки>"))
-			note = services.select_note(db=db, note_id=id, user_id=current_user.id)
+			note = notes.select_note(db=db, note_id=id, user_id=current_user.id)
 			if note:
 				while in_select:
 					print("\n---------",note.title, "---------")
@@ -75,7 +75,7 @@ while on_procces:
 						new_body = input("Тело заметки:")
 						sure = input("Обновить заметку? (д/н)>")
 						if sure == 'д':
-							services.update_user_note(db=db, note=note, new_title=new_title, new_body=new_body)
+							notes.update_user_note(db=db, note=note, new_title=new_title, new_body=new_body)
 							print("Заметка обновлена!")
 							in_select = False
 						elif sure == 'н':
@@ -83,7 +83,7 @@ while on_procces:
 					elif cmd == 2:
 						sure = input("Удалить заметку? (д/н)>")
 						if sure == 'д':
-							services.delete_user_note(db=db, note=note)
+							notes.delete_user_note(db=db, note=note)
 							print("Заметка удалена!")
 							in_select = False
 						elif sure == 'н':
@@ -96,7 +96,7 @@ while on_procces:
 			else:
 				print("Заметка не доступна или не существует!")
 		case "show_all":
-			notes = services.lits_user_notes(db=db, user_id=current_user.id)
+			notes = notes.lits_user_notes(db=db, user_id=current_user.id)
 
 			print("---------------------------------")
 			for note in notes:

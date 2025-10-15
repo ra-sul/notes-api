@@ -2,10 +2,11 @@ from fastapi  import  FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi import Request
-from scemas import Note, Login
-from models import User
-from database import SessionLocal, init_db
-import services
+
+from src.app.scemas.scemas import Note, Login
+from src.app.models.models import User
+from src.app.database import SessionLocal, init_db
+from src.app.services import users, notes
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="very_secret_key")
@@ -35,7 +36,7 @@ def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
 
 @app.post("/login")
 def login(request: Request, login: Login, db: Session = Depends(get_db)):
-    current_user = services.login_user(db=db, name=login.name, password=login.password)
+    current_user = users.login_user(db=db, name=login.name, password=login.password)
     request.session["user_id"] = current_user.id
 
     return {"message": f"Привет, {current_user.name}!"}
@@ -47,4 +48,4 @@ def logout(request: Request):
 
 @app.get("/notes", response_model=list[Note])    
 def show_all_notes(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    return services.list_user_notes(db=db, user_id=current_user.id)
+    return notes.list_user_notes(db=db, user_id=current_user.id)

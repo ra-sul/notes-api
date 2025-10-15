@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base
+from src.app.models.models import Base
 
 engine = create_engine("sqlite:///./test.db")
 
