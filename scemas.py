@@ -7,3 +7,10 @@ class NoteBase(BaseModel):
 class Note(NoteBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
+
+class UserBase(BaseModel):
+    name: str
+    password: str
+
+class Login(UserBase):
+    model_config = ConfigDict(from_attributes=True)
