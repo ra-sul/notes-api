@@ -1,4 +1,4 @@
-from src.app.models.models import Note
+from src.app.models.notes import Note
 from sqlalchemy.orm import Session
 
 def create_note(db: Session, title: str, body: str, user_id: int) -> Note:

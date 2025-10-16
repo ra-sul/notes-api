@@ -1,7 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+from src.app.models.base import Base
 
 class Note(Base):
 	__tablename__ = "notes"
@@ -9,9 +7,3 @@ class Note(Base):
 	title = Column(String, index=True)
 	body = Column(String)
 	user_id = Column(Integer, ForeignKey("users.id"))
-
-class User(Base):
-	__tablename__ = "users"
-	id = Column(Integer, primary_key=True, index=True)
-	name = Column(String)
-	password = Column(String)
