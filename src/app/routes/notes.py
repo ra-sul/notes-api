@@ -13,8 +13,8 @@ router = APIRouter(prefix="/notes", tags=["notes"])
 def show_all_notes(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return notes.list_user_notes(db=db, user_id=current_user.id)
 
-@router.get("/{id}", response_model=NoteResponse)
-def show_user_note(note_id = id, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+@router.get("/{note_id}", response_model=NoteResponse)
+def show_user_note(note_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return notes.select_note(note_id=note_id, db=db, user_id=current_user.id)
 
 @router.post("/", response_model=NoteResponse)
