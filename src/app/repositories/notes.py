@@ -1,19 +1,20 @@
 from src.app.models.notes import Note
 from src.app.schemas.notes import NotePatch
 from sqlalchemy.orm import Session
+from typing import List, Optional
 
-def create_note(db: Session, title: str, body: str, user_id: int) -> Note:
+def create_note(db: Session, user_id: int, title: str, body: str) -> Note:
     new_note = Note(title=title, body=body, user_id=user_id)
     db.add(new_note)
     db.commit()
     db.refresh(new_note)
     return new_note
 
-def get_note_by_id(db: Session, id: int, user_id: int) -> Note:
-    return db.query(Note).filter(Note.id == id, Note.user_id == user_id).first()
+def get_note(db: Session, user_id: int, note_id: int) -> Optional[Note]:
+    return db.query(Note).filter(Note.id == note_id, Note.user_id == user_id).first()
 
-def get_notes_by_user(db: Session, user_id: int) -> list[Note]:
-    return db.query(Note).filter(Note.user_id ==user_id).all()
+def list_notes(db: Session, user_id: int) -> List[Note]:
+    return db.query(Note).filter(Note.user_id == user_id).all()
 
 def update_note(db: Session, note: Note, new_title: str, new_body: str) -> Note:
     note.title = new_title
@@ -34,6 +35,6 @@ def patch_note(db: Session, note: Note, update_data: NotePatch) -> Note:
     
     return note
 
-def delete_note(db: Session, note: Note):
+def delete_note(db: Session, note: Note) -> None:
     db.delete(note)
     db.commit()

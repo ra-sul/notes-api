@@ -1,23 +1,26 @@
 from sqlalchemy.orm import Session
-from src.app.repositories import notes
+from src.app.models.notes import Note
+from src.app.repositories import notes as notes_repo
 from src.app.schemas.notes import NotePatch
+from typing import List
 
-def add_note_for_user(db: Session, title: str, body: str, user_id: int):
-	return notes.create_note(db=db, title=title, body=body, user_id=user_id)
+def create_note(db: Session, user_id: int, title: str, body: str) -> Note:
+	return notes_repo.create_note(db, user_id, title, body)
 
-def select_note(db: Session, note_id: int, user_id: int):
-	return notes.get_note_by_id(db=db, id=note_id, user_id=user_id)
+def get_note(db: Session, user_id: int, note_id: int) -> Note:
+	return notes_repo.get_note(db, user_id, note_id)
 
-def update_user_note(db: Session, note, new_title: str, new_body: str):
-	return notes.update_note(db=db, note=note, new_title=new_title, new_body=new_body)
+def update_note(db: Session, user_id: int, note_id: int, new_title: str, new_body: str) -> Note:
+	note = get_note(db, user_id, note_id)
+	return notes_repo.update_note(db, note, new_title, new_body)
 
-def delete_user_note(db: Session, note_id: int, user_id: int):
-	note = notes.get_note_by_id(db=db, id=note_id, user_id=user_id)
-	return notes.delete_note(db=db, note=note)
+def delete_note(db: Session, user_id: int, note_id: int) -> None:
+	note = get_note(db, user_id, note_id)
+	notes_repo.delete_note(db, note)
 
-def list_user_notes(db: Session, user_id: int):
-	return notes.get_notes_by_user(db=db, user_id=user_id)
+def list_notes(db: Session, user_id: int) -> List[Note]:
+	return notes_repo.list_notes(db, user_id)
 
-def patch_user_note(db: Session, note_id: int, user_id: int, update_data: NotePatch):
-	note = notes.get_note_by_id(db=db, id=note_id, user_id=user_id)
-	return notes.patch_note(db=db, note=note, update_data=update_data)
+def patch_note(db: Session, user_id: int, note_id: int, update_data: NotePatch) -> Note:
+	note = get_note(db, user_id, note_id)
+	return notes_repo.patch_note(db, note, update_data)
