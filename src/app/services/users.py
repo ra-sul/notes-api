@@ -3,7 +3,10 @@ from src.app.repositories import users
 from src.app.models.users import User
 
 def register_user(db: Session, name: str, password: str) -> User:
-	return users.create_user(db=db, name=name, password=password)
+	new_user = users.create_user(db=db, name=name, password=password)
+	db.commit()
+	db.refresh(new_user)
+	return new_user
 
 def login_user(db: Session, name: str, password: str) -> User:
 	user = users.get_user(db=db, name=name, password=password)
