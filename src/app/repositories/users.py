@@ -8,3 +8,6 @@ def create_user(db: Session, name: str, password: str) -> User:
 
 def get_user(db: Session, name: str, password: str) -> User:
 	return db.query(User).filter(User.name == name, User.password == password).first()
+
+def get_user_by_name(db: Session, name: str) -> User:
+	return db.query(User).filter(User.name == name).first()

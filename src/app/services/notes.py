@@ -1,17 +1,27 @@
 from sqlalchemy.orm import Session
+from typing import List
+
 from src.app.models.notes import Note
 from src.app.repositories import notes as notes_repo
 from src.app.schemas.notes import NotePatch
-from typing import List
+from src.app.exceptions.notes import NoteNotFoundError, EmptyNoteTitleError
 
 def create_note(db: Session, user_id: int, title: str, body: str) -> Note:
+	if not title:
+		raise EmptyNoteTitleError()
+	
 	new_note = notes_repo.create_note(db, user_id, title, body)
 	db.commit()
 	db.refresh(new_note)
 	return new_note
 
+
 def get_note(db: Session, user_id: int, note_id: int) -> Note:
-	return notes_repo.get_note(db, user_id, note_id)
+	note = notes_repo.get_note(db, user_id, note_id)
+	if not note:
+		raise NoteNotFoundError()
+	return note
+
 
 def update_note(db: Session, user_id: int, note_id: int, new_title: str, new_body: str) -> Note:
 	note = get_note(db, user_id, note_id)
@@ -20,13 +30,16 @@ def update_note(db: Session, user_id: int, note_id: int, new_title: str, new_bod
 	db.refresh(updated_note)
 	return updated_note
 
+
 def delete_note(db: Session, user_id: int, note_id: int) -> None:
 	note = get_note(db, user_id, note_id)
 	notes_repo.delete_note(db, note)
 	db.commit()
 
+
 def list_notes(db: Session, user_id: int) -> List[Note]:
 	return notes_repo.list_notes(db, user_id)
+
 
 def patch_note(db: Session, user_id: int, note_id: int, update_data: NotePatch) -> Note:
 	note = get_note(db, user_id, note_id)
