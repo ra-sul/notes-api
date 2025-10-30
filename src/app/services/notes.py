@@ -4,12 +4,9 @@ from typing import List
 from src.app.models.notes import Note
 from src.app.repositories import notes as notes_repo
 from src.app.schemas.notes import NotePatch
-from src.app.exceptions.notes import NoteNotFoundError, EmptyNoteTitleError
+from src.app.exceptions.notes import NoteNotFoundError
 
 def create_note(db: Session, user_id: int, title: str, body: str) -> Note:
-	if not title:
-		raise EmptyNoteTitleError()
-	
 	new_note = notes_repo.create_note(db, user_id, title, body)
 	db.commit()
 	db.refresh(new_note)
