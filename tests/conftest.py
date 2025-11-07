@@ -6,7 +6,7 @@ from src.app.models.base import Base
 from src.app.models.notes import Note
 from src.app.repositories.notes import NoteRepository
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory"
+SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(bind=engine)
 
