@@ -54,7 +54,9 @@ def test_update(repo, user):
 	repo.db.commit()
 	repo.db.refresh(note)
 
-	updated_note = repo.update(note, "Updated title", "Updated body")
+	data = {"title": "Updated title", "body": "Updated body"}
+
+	updated_note = repo.update(note, data)
 
 	assert updated_note is not None
 	assert updated_note.id == note.id
