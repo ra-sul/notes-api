@@ -2,7 +2,7 @@ from typing import List
 
 from src.app.models.notes import Note
 from src.app.repositories.notes import NoteRepository
-from src.app.schemas.notes import NotePatch
+from src.app.schemas.notes import NotePatch, NoteUpdate
 from src.app.exceptions.notes import NoteNotFoundError, NoteAccessDeniedError
 
 class NoteService:
@@ -24,9 +24,11 @@ class NoteService:
 			raise NoteAccessDeniedError()
 		return note
 
-	def update(self, user_id: int, note_id: int, new_title: str, new_body: str) -> Note:
+	def update(self, user_id: int, note_id: int, update_data: NoteUpdate) -> Note:
 		note = self.get(user_id, note_id)
-		updated_note = self.repo.update(note, new_title, new_body)
+		data = update_data.model_dump(exclude_unset=True)
+		updated_note = self.repo.update(note, data)
+		
 		self.repo.db.commit()
 		self.repo.db.refresh(updated_note)
 		return updated_note
@@ -41,7 +43,8 @@ class NoteService:
 
 	def patch(self, user_id: int, note_id: int, update_data: NotePatch) -> Note:
 		note = self.get(user_id, note_id)
-		patched_note = self.repo.patch(note, update_data)
+		data = update_data.model_dump(exclude_unset=True)
+		patched_note = self.repo.update(note, data)
 		self.repo.db.commit()
 		self.repo.db.refresh(patched_note)
 		return patched_note

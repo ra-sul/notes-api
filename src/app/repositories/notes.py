@@ -17,16 +17,8 @@ class NoteRepository:
     def list(self, user_id: int) -> List[Note]:
         return self.db.query(Note).filter(Note.user_id == user_id).all()
 
-    def update(self, note: Note, new_title: str, new_body: str) -> Note:
-        note.title = new_title
-        note.body = new_body
-        return note
-
-    def patch(self, note: Note, update_data: NotePatch) -> Note:
-
-        update_fields  = update_data.model_dump(exclude_unset=True)
-
-        for key, value in update_fields.items():
+    def update(self, note: Note, data: dict) -> Note:
+        for key, value in data.items():
             setattr(note, key, value)
         
         return note

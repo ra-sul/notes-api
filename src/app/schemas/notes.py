@@ -15,6 +15,8 @@ class NotePatch(BaseModel):
 class NoteCreate(NoteBase):
     title: str = Field(min_length=1, max_length=50)
 
+class NoteUpdate(NoteCreate):
+    pass
 
 class NoteInDB(NoteBase):
     id: int
