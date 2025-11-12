@@ -2,8 +2,10 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.models.base import Base
-from app.repositories.notes import NoteRepository
+from src.app.models.base import Base
+from src.app.models.users import User
+from src.app.models.notes import Note
+from src.app.repositories.notes import NoteRepository
 
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -23,4 +25,11 @@ def db_session():
 @pytest.fixture
 def repo(db_session):
     return NoteRepository(db=db_session)
-    
+
+@pytest.fixture
+def user(db_session):
+    user = User(name="Admin", password="1234")
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    return user
