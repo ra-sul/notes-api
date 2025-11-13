@@ -23,7 +23,7 @@ def db_session():
         Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture
-def repo(db_session):
+def notes_repo(db_session):
     return NoteRepository(db=db_session)
 
 @pytest.fixture
@@ -33,3 +33,11 @@ def user(db_session):
     db_session.commit()
     db_session.refresh(user)
     return user
+
+@pytest.fixture
+def note(db_session, user):
+    note = Note(title="Test title", body="Test body", user_id=user.id)
+    db_session.add(note)
+    db_session.commit()
+    db_session.refresh(note)
+    return note
