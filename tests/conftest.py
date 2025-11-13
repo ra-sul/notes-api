@@ -6,6 +6,7 @@ from src.app.models.base import Base
 from src.app.models.users import User
 from src.app.models.notes import Note
 from src.app.repositories.notes import NoteRepository
+from src.app.repositories.users import UserRepository
 
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -24,7 +25,11 @@ def db_session():
 
 @pytest.fixture
 def notes_repo(db_session):
-    return NoteRepository(db=db_session)
+    return NoteRepository(db_session)
+
+@pytest.fixture
+def users_repo(db_session):
+    return UserRepository(db_session)
 
 @pytest.fixture
 def user(db_session):
