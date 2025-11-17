@@ -24,27 +24,29 @@ class NoteService:
 			raise NoteAccessDeniedError()
 		return note
 
+	def list(self, user_id: int) -> List[Note]:
+		return self.repo.list(user_id)
+
 	def update(self, user_id: int, note_id: int, update_data: NoteUpdate) -> Note:
 		note = self.get(user_id, note_id)
-		data = update_data.model_dump(exclude_unset=True)
+		data = update_data.model_dump()
 		updated_note = self.repo.update(note, data)
 		
 		self.repo.db.commit()
 		self.repo.db.refresh(updated_note)
 		return updated_note
 
-	def delete(self, user_id: int, note_id: int) -> None:
-		note = self.get(user_id, note_id)
-		self.repo.delete(note)
-		self.repo.db.commit()
-
-	def list(self, user_id: int) -> List[Note]:
-		return self.repo.list(user_id)
 
 	def patch(self, user_id: int, note_id: int, update_data: NotePatch) -> Note:
 		note = self.get(user_id, note_id)
 		data = update_data.model_dump(exclude_unset=True)
 		patched_note = self.repo.update(note, data)
+
 		self.repo.db.commit()
 		self.repo.db.refresh(patched_note)
 		return patched_note
+
+	def delete(self, user_id: int, note_id: int) -> None:
+		note = self.get(user_id, note_id)
+		self.repo.delete(note)
+		self.repo.db.commit()
