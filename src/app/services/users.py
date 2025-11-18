@@ -7,7 +7,7 @@ class UserService:
 		self.repo = repo
 
 	def register(self, name: str, password: str) -> User:
-		user = self.repo.get_by_name(name=name)
+		user = self.repo.get_by_name(name)
 		if user:
 			raise UserAlreadyExistsError()
 		
@@ -18,7 +18,7 @@ class UserService:
 		return new_user
 
 	def login(self, name: str, password: str) -> User:
-		user = self.repo.get(name=name, password=password)
+		user = self.repo.get(name, password)
 		if not user:
 			raise InvalidCredentialsError()
 		return user
