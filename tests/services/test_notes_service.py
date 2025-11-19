@@ -8,9 +8,8 @@ from src.app.exceptions.notes import NoteNotFoundError, NoteAccessDeniedError
 
 @pytest.fixture
 def mock_repo():
-    repo = Mock()
-    return repo
-
+    return Mock()
+    
 
 @pytest.fixture
 def service(mock_repo):

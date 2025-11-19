@@ -7,8 +7,7 @@ from src.app.exceptions.users import UserAlreadyExistsError, InvalidCredentialsE
 
 @pytest.fixture
 def mock_repo():
-    repo = Mock()
-    return repo
+    return Mock()
 
 
 @pytest.fixture

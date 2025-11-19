@@ -1,12 +1,16 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from fastapi.testclient import TestClient
 
+from src.main import app
 from src.app.models.base import Base
 from src.app.models.users import User
 from src.app.models.notes import Note
 from src.app.repositories.notes import NoteRepository
 from src.app.repositories.users import UserRepository
+from src.app.dependencies.users import get_current_user
+from src.app.dependencies.notes import get_note_service
 
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -22,6 +26,19 @@ def db_session():
     finally:
         session.close()
         Base.metadata.drop_all(bind=engine)
+
+@pytest.fixture
+def client(mock_note_service, mock_current_user):
+    app.dependency_overrides = {
+        get_note_service: lambda: mock_note_service,
+        get_current_user: lambda: mock_current_user
+    }
+
+    with TestClient(app) as c:
+        yield c
+    
+    app.dependency_overrides.clear()
+
 
 @pytest.fixture
 def notes_repo(db_session):
