@@ -18,7 +18,7 @@ def test_list_notes(client, mock_note_service):
 	mock_note_service.list.assert_called_once_with(user_id=1)
 
 
-def test_get_list(client, mock_note_service):
+def test_get_note(client, mock_note_service):
 	mock_note_service.get.return_value = Note(id=1, title="Test title", body="Test body")
 
 	response = client.get("/notes/1")
@@ -29,7 +29,7 @@ def test_get_list(client, mock_note_service):
 	mock_note_service.get.assert_called_once_with(user_id=1, note_id=1)
 
 
-def test_get_list_note_not_found(client, mock_note_service):
+def test_get_note_not_found(client, mock_note_service):
 	mock_note_service.get.side_effect = NoteNotFoundError()
 
 	response = client.get("/notes/1")
