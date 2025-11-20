@@ -2,6 +2,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
+from unittest.mock import Mock
 
 from src.main import app
 from src.app.models.base import Base
@@ -9,7 +10,7 @@ from src.app.models.users import User
 from src.app.models.notes import Note
 from src.app.repositories.notes import NoteRepository
 from src.app.repositories.users import UserRepository
-from src.app.dependencies.users import get_current_user
+from src.app.dependencies.users import get_current_user, get_user_service
 from src.app.dependencies.notes import get_note_service
 
 
@@ -28,9 +29,22 @@ def db_session():
         Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture
-def client(mock_note_service, mock_current_user):
+def mock_user_service():
+	return Mock()
+
+@pytest.fixture
+def mock_note_service():
+	return Mock()
+
+@pytest.fixture
+def mock_current_user():
+    return User(id=1, name="Admin", password="1234")
+
+@pytest.fixture
+def client(mock_note_service, mock_user_service, mock_current_user):
     app.dependency_overrides = {
         get_note_service: lambda: mock_note_service,
+        get_user_service: lambda: mock_user_service,
         get_current_user: lambda: mock_current_user
     }
 

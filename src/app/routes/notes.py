@@ -22,7 +22,7 @@ def create_note(note: NoteCreate, service: NoteService = Depends(get_note_servic
     return service.create(user_id=current_user.id, title=note.title, body=note.body)
 
 @router.patch("/{note_id}", response_model=NoteResponse)
-def update_note(note_id: int, update_data: NotePatch, service: NoteService = Depends(get_note_service), current_user: User = Depends(get_current_user)):
+def patch_note(note_id: int, update_data: NotePatch, service: NoteService = Depends(get_note_service), current_user: User = Depends(get_current_user)):
     return service.patch(user_id=current_user.id, note_id=note_id, update_data=update_data)
 
 @router.delete("/{note_id}", status_code=status.HTTP_204_NO_CONTENT)

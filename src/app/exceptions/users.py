@@ -6,4 +6,4 @@ class InvalidCredentialsError(UnauthorizedError):
 
 
 class UserAlreadyExistsError(ConflictError):
-    message = "User with this name already exists."
+    message = "User with this name already exists"
