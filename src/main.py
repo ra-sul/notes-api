@@ -6,6 +6,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from src.app.routes import auth, notes
 from src.app.database import init_db
 from src.app.exceptions.base import AppError
+from src.app.logging_config import logger
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -23,3 +24,4 @@ async def app_exception_handler(request: Request, exc: Exception):
         status_code=exc.status_code,
         content={"error": exc.__class__.__name__, "detail": exc.message}
     )
+logger.info("Server started")
