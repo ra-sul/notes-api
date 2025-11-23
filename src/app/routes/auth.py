@@ -4,12 +4,14 @@ from sqlalchemy.orm import Session
 from src.app.dependencies.users import get_user_service
 from src.app.schemas.users import UserLogin, UserResponse, UserRegister
 from src.app.services.users import UserService
+from src.app.logging_config import logger
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register(register: UserRegister, service: UserService = Depends(get_user_service)):
     new_user = service.register(name=register.name, password=register.password)
+    logger.info("User %s registered", new_user.id)
     return {
         "id": new_user.id,
         "name": new_user.name,
@@ -21,6 +23,7 @@ def register(register: UserRegister, service: UserService = Depends(get_user_ser
 def login(request: Request, login: UserLogin, service: UserService = Depends(get_user_service)):
     current_user = service.login(name=login.name, password=login.password)
     request.session["user_id"] = current_user.id
+    logger.info("User %s logged in", current_user.id)
     return {
         "id": current_user.id,
         "name": current_user.name,
@@ -30,5 +33,7 @@ def login(request: Request, login: UserLogin, service: UserService = Depends(get
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
 def logout(request: Request, response: Response):
+    current_user_id = request.session.get("user_id")
     request.session.clear()
     response.delete_cookie("session")
+    logger.info("User %s logged out", current_user_id)
