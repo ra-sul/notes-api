@@ -1,4 +1,4 @@
-from src.app.exceptions.base import NotFoundError, ForbiddenError
+from app.exceptions.base import NotFoundError, ForbiddenError
 
 
 class NoteNotFoundError(NotFoundError):

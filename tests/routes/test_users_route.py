@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import Mock
 
-from src.app.models.users import User
-from src.app.exceptions.users import UserAlreadyExistsError, InvalidCredentialsError
+from app.models.users import User
+from app.exceptions.users import UserAlreadyExistsError, InvalidCredentialsError
 
 
 def test_register(client, mock_user_service):

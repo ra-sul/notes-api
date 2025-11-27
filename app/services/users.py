@@ -1,6 +1,6 @@
-from src.app.repositories.users import UserRepository
-from src.app.models.users import User
-from src.app.exceptions.users import InvalidCredentialsError, UserAlreadyExistsError
+from app.repositories.users import UserRepository
+from app.models.users import User
+from app.exceptions.users import InvalidCredentialsError, UserAlreadyExistsError
 
 class UserService:
 	def __init__(self, repo: UserRepository):

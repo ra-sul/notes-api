@@ -1,10 +1,10 @@
 from fastapi import Request, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from src.app.models.users import User
-from src.app.repositories.users import UserRepository
-from src.app.services.users import UserService
-from src.app.dependencies.db import get_db
+from app.models.users import User
+from app.repositories.users import UserRepository
+from app.services.users import UserService
+from app.dependencies.db import get_db
 
 def get_current_user(request: Request, db: Session = Depends(get_db)) -> User:
     user_id = request.session.get("user_id")

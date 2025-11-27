@@ -1,9 +1,9 @@
 import pytest
 from unittest.mock import Mock
 
-from src.app.services.users import UserService
-from src.app.models.users import User
-from src.app.exceptions.users import UserAlreadyExistsError, InvalidCredentialsError
+from app.services.users import UserService
+from app.models.users import User
+from app.exceptions.users import UserAlreadyExistsError, InvalidCredentialsError
 
 @pytest.fixture
 def mock_repo():

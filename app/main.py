@@ -3,10 +3,10 @@ from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from starlette.middleware.sessions import SessionMiddleware
 
-from src.app.routes import auth, notes
-from src.app.database import init_db
-from src.app.exceptions.base import AppError
-from src.app.logging_config import logger
+from app.routes import auth, notes
+from app.database import init_db
+from app.exceptions.base import AppError
+from app.logging_config import logger
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

@@ -4,14 +4,14 @@ from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
 from unittest.mock import Mock
 
-from src.main import app
-from src.app.models.base import Base
-from src.app.models.users import User
-from src.app.models.notes import Note
-from src.app.repositories.notes import NoteRepository
-from src.app.repositories.users import UserRepository
-from src.app.dependencies.users import get_current_user, get_user_service
-from src.app.dependencies.notes import get_note_service
+from app.main import app
+from app.models.base import Base
+from app.models.users import User
+from app.models.notes import Note
+from app.repositories.notes import NoteRepository
+from app.repositories.users import UserRepository
+from app.dependencies.users import get_current_user, get_user_service
+from app.dependencies.notes import get_note_service
 
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"

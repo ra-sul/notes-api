@@ -1,4 +1,4 @@
-from src.app.exceptions.base import UnauthorizedError, ConflictError
+from app.exceptions.base import UnauthorizedError, ConflictError
 
 
 class InvalidCredentialsError(UnauthorizedError):

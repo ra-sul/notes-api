@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import Mock
 
-from src.app.services.notes import NoteService
-from src.app.models.notes import Note
-from src.app.schemas.notes import NoteUpdate, NotePatch
-from src.app.exceptions.notes import NoteNotFoundError, NoteAccessDeniedError
+from app.services.notes import NoteService
+from app.models.notes import Note
+from app.schemas.notes import NoteUpdate, NotePatch
+from app.exceptions.notes import NoteNotFoundError, NoteAccessDeniedError
 
 @pytest.fixture
 def mock_repo():

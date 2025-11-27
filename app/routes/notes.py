@@ -2,12 +2,12 @@ from fastapi import APIRouter, Request, Depends, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from src.app.schemas.notes import NoteResponse, NoteCreate, NotePatch
-from src.app.models.users import User
-from src.app.dependencies.notes import get_note_service
-from src.app.dependencies.users import get_current_user
-from src.app.services.notes import NoteService
-from src.app.logging_config import logger
+from app.schemas.notes import NoteResponse, NoteCreate, NotePatch
+from app.models.users import User
+from app.dependencies.notes import get_note_service
+from app.dependencies.users import get_current_user
+from app.services.notes import NoteService
+from app.logging_config import logger
 
 router = APIRouter(prefix="/notes", tags=["notes"])
 

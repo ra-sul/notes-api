@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import Mock
 
-from src.app.models.notes import Note
-from src.app.models.users import User
-from src.app.exceptions.notes import NoteNotFoundError
-from src.app.schemas.notes import NotePatch
+from app.models.notes import Note
+from app.models.users import User
+from app.exceptions.notes import NoteNotFoundError
+from app.schemas.notes import NotePatch
 
 
 def test_list_notes(client, mock_note_service):

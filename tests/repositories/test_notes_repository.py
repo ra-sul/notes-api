@@ -1,4 +1,4 @@
-from src.app.models.notes import Note
+from app.models.notes import Note
 
 def test_create(notes_repo, user):
 	note = Note(title="Test title", body="Test body", user_id=user.id)

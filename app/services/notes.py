@@ -1,9 +1,9 @@
 from typing import List
 
-from src.app.models.notes import Note
-from src.app.repositories.notes import NoteRepository
-from src.app.schemas.notes import NotePatch, NoteUpdate
-from src.app.exceptions.notes import NoteNotFoundError, NoteAccessDeniedError
+from app.models.notes import Note
+from app.repositories.notes import NoteRepository
+from app.schemas.notes import NotePatch, NoteUpdate
+from app.exceptions.notes import NoteNotFoundError, NoteAccessDeniedError
 
 class NoteService:
 	def __init__(self, repo: NoteRepository):

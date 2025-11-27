@@ -1,4 +1,4 @@
-from src.app.models.users import User
+from app.models.users import User
 
 def test_create(users_repo):
     user = User(name="User", password="password")

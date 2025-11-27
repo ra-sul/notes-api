@@ -1,5 +1,5 @@
-from src.app.models.notes import Note
-from src.app.schemas.notes import NotePatch
+from app.models.notes import Note
+from app.schemas.notes import NotePatch
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
