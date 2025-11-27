@@ -7,13 +7,14 @@ from app.routes import auth, notes
 from app.database import init_db
 from app.exceptions.base import AppError
 from app.logging_config import logger
+from app.core.config import settings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
     yield
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(debug=settings.DEBUG, lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(notes.router)
 app.add_middleware(SessionMiddleware, secret_key="very_secret_key")

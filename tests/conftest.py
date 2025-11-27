@@ -12,10 +12,9 @@ from app.repositories.notes import NoteRepository
 from app.repositories.users import UserRepository
 from app.dependencies.users import get_current_user, get_user_service
 from app.dependencies.notes import get_note_service
+from app.core.config import settings
 
-
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(bind=engine)
 
 @pytest.fixture
