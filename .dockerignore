@@ -1,0 +1,33 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Виртуальное окружение
+venv/
+.env
+
+# Логи, дампы, временные файлы
+*.log
+*.sqlite3
+data/
+*.db
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Сборки и пакеты
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Node (если будет)
+node_modules/
+
+# Git
+.git/
