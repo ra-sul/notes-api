@@ -12,8 +12,6 @@ services:
       - "5432:5423"
     volumes:
       - pgdata:/var/lib/posgresql/data
-      - ./alembic.ini:/app/alembic.ini
-      - ./alembic:/app/alembic
   
   backend:
     build:
