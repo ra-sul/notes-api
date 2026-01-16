@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: app
+    ports:
+      - "5432:5423"
+    volumes:
+      - pgdata:/var/lib/posgresql/data
+      - ./alembic.ini:/app/alembic.ini
+      - ./alembic:/app/alembic
+  
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg2://app:app@db:5432/app
+    ports:
+      - "8000:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  
+volumes:
+  pgdata:

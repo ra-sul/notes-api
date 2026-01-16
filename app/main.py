@@ -4,14 +4,12 @@ from contextlib import asynccontextmanager
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.routes import auth, notes
-from app.database import init_db
 from app.exceptions.base import AppError
 from app.logging_config import logger
 from app.core.config import settings
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()
     yield
 
 app = FastAPI(debug=settings.DEBUG, lifespan=lifespan)
