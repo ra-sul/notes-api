@@ -9,17 +9,35 @@ services:
       POSTGRES_PASSWORD: app
       POSTGRES_DB: app
     ports:
-      - "5432:5423"
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/posgresql/data
-  
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U app -d app"]
+          interval: 5s
+          timeout: 5s
+          retries: 5
+          start_period: 10s
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg2://app:app@db:5432/app
+    command: alembic upgrade head
+
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: backend
     depends_on:
-      - db
+      migrations:
+        condition: service_completed_successfully
     environment:
       DATABASE_URL: postgresql+psycopg2://app:app@db:5432/app
     ports:
