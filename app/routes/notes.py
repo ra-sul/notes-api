@@ -5,7 +5,7 @@ from typing import List
 from app.schemas.notes import NoteResponse, NoteCreate, NotePatch
 from app.models.users import User
 from app.dependencies.notes import get_note_service
-from app.dependencies.users import get_current_user
+from app.auth.dependencies import get_current_user
 from app.services.notes import NoteService
 from app.logging_config import logger
 
