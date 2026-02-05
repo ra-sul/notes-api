@@ -7,6 +7,7 @@ from app.database import engine
 from app.models.base import Base
 from app.models.notes import Note
 from app.models.users import User
+from app.models.refresh_tokens import RefreshToken
 
 
 # this is the Alembic Config object, which provides
