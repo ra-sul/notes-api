@@ -10,7 +10,7 @@ from app.logging_config import logger
 
 engine = create_engine(settings.DATABASE_URL)
 
-for attempt in range(5):
+for attempt in range(10):
 	try:
 		with engine.connect() as conn:
 			logger.info("Connected to Database!")
