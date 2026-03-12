@@ -3,14 +3,14 @@ from typing import List
 
 from app.repositories.refresh_tokens import RefreshTokenRepository
 from app.models.refresh_tokens import RefreshToken
-from app.auth.jwt_utils import REFRESH_TOKEN_EXPIRE_DAYS
+from app.core.config import settings
 
 class RefreshTokenService():
 	def __init__(self, repo: RefreshTokenRepository):
 		self.repo = repo
 	
 	def create(self, user_id: int, jti: str):
-		expires_at = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+		expires_at = datetime.now(timezone.utc) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
 		new_token = RefreshToken(user_id=user_id, jti=jti, expires_at=expires_at)
 		self.repo.create(new_token)
 		self.repo.db.commit()

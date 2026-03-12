@@ -15,7 +15,6 @@ async def lifespan(app: FastAPI):
 app = FastAPI(debug=settings.DEBUG, lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(notes.router)
-app.add_middleware(SessionMiddleware, secret_key="very_secret_key")
 
 @app.exception_handler(AppError)
 async def app_exception_handler(request: Request, exc: Exception):

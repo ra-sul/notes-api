@@ -7,7 +7,7 @@ from app.schemas.users import UserLogin, UserResponse, UserRegister
 from app.schemas.tokens import TokenResponse, RefreshRequest, RefreshLogout
 from app.services.users import UserService
 from app.logging_config import logger
-from app.auth.jwt_utils import create_acces_token, create_refresh_token, verify_token, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_DAYS
+from app.auth.jwt_utils import create_acces_token, create_refresh_token, verify_token
 from app.services.refresh_tokens import RefreshTokenService
 from datetime import timedelta
 
@@ -33,16 +33,12 @@ def login(
     ):
     user = user_service.login(name=login.name, password=login.password)
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_acces_token(
-        data={"sub": str(user.id)},
-        expire_delta=access_token_expires
+        data={"sub": str(user.id)}
     )
 
-    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     refresh_token, jti = create_refresh_token(
-        data={"sub": str(user.id)},
-        expire_delta=refresh_token_expires
+        data={"sub": str(user.id)}
         )
     
     refresh_token_service.create(user_id=user.id, jti=jti)
