@@ -10,7 +10,8 @@ from app.models.users import User
 from app.models.notes import Note
 from app.repositories.notes import NoteRepository
 from app.repositories.users import UserRepository
-from app.dependencies.users import get_current_user, get_user_service
+from app.auth.dependencies import get_current_user
+from app.dependencies.users import get_user_service
 from app.dependencies.notes import get_note_service
 from app.core.config import settings
 
