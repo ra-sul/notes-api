@@ -13,6 +13,7 @@ from app.repositories.users import UserRepository
 from app.auth.dependencies import get_current_user
 from app.dependencies.users import get_user_service
 from app.dependencies.notes import get_note_service
+from app.dependencies.refresh_tokens import get_refresh_token_service
 from app.core.config import settings
 
 if settings.DATABASE_URL.startswith("sqlite"):
@@ -37,19 +38,24 @@ def mock_user_service():
 	return Mock()
 
 @pytest.fixture
-def mock_note_service():
-	return Mock()
+def mock_refresh_token_service():
+     return Mock()
 
 @pytest.fixture
 def mock_current_user():
     return User(id=1, name="Admin", password="1234")
 
 @pytest.fixture
+def mock_note_service():
+	return Mock()
+
+@pytest.fixture
 def client(mock_note_service, mock_user_service, mock_current_user):
     app.dependency_overrides = {
-        get_note_service: lambda: mock_note_service,
         get_user_service: lambda: mock_user_service,
-        get_current_user: lambda: mock_current_user
+        get_current_user: lambda: mock_current_user,
+        get_refresh_token_service: lambda: mock_refresh_token_service,
+        get_note_service: lambda: mock_note_service
     }
 
     with TestClient(app) as c:

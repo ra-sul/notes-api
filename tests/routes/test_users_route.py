@@ -32,7 +32,7 @@ def test_register_user_already_exists(client, mock_user_service):
 	}
 
 
-def test_login(client, mock_user_service):
+def test_login(client, mock_user_service, mock_refresh_token_service):
 	mock_user_service.login.return_value = User(id=1, name="Admin", password="1234")
 
 	result = client.post("/auth/login", json={"name": "Admin", "password": "1234"})
