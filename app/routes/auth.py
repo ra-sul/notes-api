@@ -7,7 +7,7 @@ from app.schemas.users import UserLogin, UserResponse, UserRegister
 from app.schemas.tokens import TokenResponse, RefreshRequest, RefreshLogout
 from app.services.users import UserService
 from app.logging_config import logger
-from app.auth.jwt_utils import create_acces_token, create_refresh_token, verify_token
+from app.auth.jwt_utils import create_access_token, create_refresh_token, verify_token
 from app.services.refresh_tokens import RefreshTokenService
 from datetime import timedelta
 
@@ -33,7 +33,7 @@ def login(
     ):
     user = user_service.login(name=login.name, password=login.password)
 
-    access_token = create_acces_token(
+    access_token = create_access_token(
         data={"sub": str(user.id)}
     )
 
@@ -74,7 +74,7 @@ def refresh(
             detail="Refresh token has been revoked or expired"
         )
     
-    access_token = create_acces_token({"sub": user_id})
+    access_token = create_access_token({"sub": user_id})
 
     return {
         "access_token": access_token,

@@ -39,7 +39,7 @@ def mock_user_service():
 
 @pytest.fixture
 def mock_refresh_token_service():
-     return Mock()
+    return Mock()
 
 @pytest.fixture
 def mock_current_user():
@@ -50,7 +50,7 @@ def mock_note_service():
 	return Mock()
 
 @pytest.fixture
-def client(mock_note_service, mock_user_service, mock_current_user):
+def client(mock_note_service, mock_user_service, mock_current_user, mock_refresh_token_service):
     app.dependency_overrides = {
         get_user_service: lambda: mock_user_service,
         get_current_user: lambda: mock_current_user,

@@ -10,7 +10,7 @@ ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 REFRESH_TOKEN_EXPIRE_DAYS = settings.REFRESH_TOKEN_EXPIRE_DAYS
 
-def create_acces_token(data: dict, expire_delta: Optional[timedelta] = None) -> str:
+def create_access_token(data: dict, expire_delta: Optional[timedelta] = None) -> str:
 	to_encode = data.copy()
 	if expire_delta:
 		expire = datetime.now(timezone.utc) + expire_delta
