@@ -8,7 +8,8 @@ Backend API для приложения заметок.
 
 ## Features
 
-- Аутентификация пользователей с изоляцией данных
+- Аутентификация пользователей через JWT токены
+- Регистрация и логин пользователей
 - CRUD-операции для заметок
 - Доступ к данным строго в рамках текущего пользователя
 - Слоистая архитектура (routes / services / repositories)
@@ -28,6 +29,7 @@ Backend API для приложения заметок.
 - Pydantic v2
 - PostgreSQL
 - Alembic
+- JWT (python-jose)
 - Docker, Docker Compose
 - Pytest
 - GitHub Actions
@@ -40,6 +42,7 @@ Backend API для приложения заметок.
 - Service layer — бизнес-логика
 - Repository layer — работа с БД
 - Models / Schemas — ORM и Pydantic модели
+- Auth module — логика аутентификации и работы с JWT
 
 Слои изолированы и не зависят напрямую друг от друга.
 
@@ -58,8 +61,9 @@ Backend API для приложения заметок.
 ## Project Structure
 ```text
 app/
+ ├─ auth/         # JWT, токены, get_current_user
  ├─ core/         # Конфигурация, настройки (pydantic-settings)
- ├─ dependencies/ # Зависимости FastAPI (get_db, get_current_user)
+ ├─ dependencies/ # Зависимости FastAPI (get_db, get_note_repo)
  ├─ exceptions/   # Кастомные ошибки и обработчики
  ├─ models/       # SQLAlchemy модели (DB Schema)
  ├─ repositories/ # Прямая работа с БД
@@ -74,6 +78,7 @@ app/
 Auth:
 - POST /auth/register
 - POST /auth/login
+- POST /auth/refresh
 - POST /auth/logout
 
 Notes:
@@ -91,7 +96,7 @@ Notes:
 Создайте файл .env на основе примера:
 `.env.example `
 
-Note: Не забудьте обновить DATABASE_URL и секретные ключи в .env.
+Note: Не забудьте обновить DATABASE_URL, настройки JWT, секретные ключи в .env.
 
 
 ## Run with Docker (Recommended)
