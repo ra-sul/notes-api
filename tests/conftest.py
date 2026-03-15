@@ -14,12 +14,8 @@ from app.auth.dependencies import get_current_user
 from app.dependencies.users import get_user_service
 from app.dependencies.notes import get_note_service
 from app.dependencies.refresh_tokens import get_refresh_token_service
-from app.core.config import settings
 
-if settings.DATABASE_URL.startswith("sqlite"):
-    engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
-else:
-    engine = create_engine(settings.DATABASE_URL)
+engine = create_engine("sqlite:///:memory:")
     
 TestingSessionLocal = sessionmaker(bind=engine)
 
